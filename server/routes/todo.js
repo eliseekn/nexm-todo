@@ -1,35 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../models')
+const todo = require('../controllers/todo')
 
-router.get('/', (req, res) => {
-    db.Todo.find()
-        .then(todo => res.json(todo))
-        .catch(err => res.send(err))
-})
+router.route('/')
+    .get(todo.index)
+    .post(todo.create)
+    .delete(todo.deleteAll)
 
-router.get('/:id', (req, res) => {
-    db.Todo.findOne({_id: req.params.id})
-        .then(todo => res.json(todo))
-        .catch(err => res.send(err))
-})
-
-router.post('/', (req, res) => {
-    db.Todo.create(req.body)
-        .then(todo => res.json(todo))
-        .catch(err => res.send(err))
-})
-
-router.put('/:id', (req, res) => {
-    db.Todo.findOneAndUpdate({_id: req.params.id}, req.body)
-        .then(todo => res.json(todo))
-        .catch(err => res.send(err))
-})
-
-router.delete('/:id', (req, res) => {
-    db.Todo.deleteOne({_id: req.params.id})
-        .then(todo => res.json(todo))
-        .catch(err => res.send(err))
-})
+router.route('/:id')
+    .get(todo.read)
+    .put(todo.update)
+    .delete(todo.delete)
 
 module.exports = router

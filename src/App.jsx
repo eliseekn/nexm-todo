@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.css'
 
+const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': '*',
+    'Access-Control-Allow-Methods': '*',
+    'Accept': 'application/json',
+}
+
 const Item = (props) => {
     const handleEdit = () => {
         props.handleEdit(props.id, props.description)
@@ -69,13 +77,7 @@ class App extends Component {
         if (this.state.actionText === 'Add item') {
             fetch('http://localhost:3001/api/todo/', {
                 method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Methods': '*',
-                    'Accept': 'application/json',
-                },
+                headers: headers,
                 body: JSON.stringify({ description: this.state.itemDescription })
             })
                 .then(res => res.json())
@@ -94,13 +96,7 @@ class App extends Component {
         else {
             fetch('http://localhost:3001/api/todo/' + this.state.itemId, {
                 method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Methods': '*',
-                    'Accept': 'application/json',
-                },
+                headers: headers,
                 body: JSON.stringify({ description: this.state.itemDescription })
             })
                 .then(res => res.json())
@@ -124,25 +120,19 @@ class App extends Component {
 
     handleDelete(itemId) {
         fetch('http://localhost:3001/api/todo/' + itemId, {
-                method: 'delete',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Headers': '*',
-                    'Access-Control-Allow-Methods': '*',
-                    'Accept': 'application/json',
-                }
-            })
-                .then(res => res.json())
-                .then(() =>
-                    this.setState(state => ({
-                        items: state.items.filter(item => item._id !== itemId)
-                    }))
-                )
+            method: 'delete',
+            headers: headers
+        })
+            .then(res => res.json())
+            .then(() =>
+                this.setState(state => ({
+                    items: state.items.filter(item => item._id !== itemId)
+                }))
+            )
     }
 
     componentDidMount() {
-        fetch('http://localhost:3001/api/todo/')
+        fetch('http://localhost:3001/api/todo/', { headers: headers })
             .then(res => res.json())
             .then(data => this.setState({ items: data }))
     }

@@ -1,9 +1,14 @@
 const mongoose = require('mongoose')
 
-const todoSchema = new mongoose.Schema({
+const schema = new mongoose.Schema({
     description: {
         type: String,
         required: true
+    },
+
+    completed: {
+        type: Boolean,
+        default: false
     },
 
     created_at: {
@@ -12,6 +17,4 @@ const todoSchema = new mongoose.Schema({
     }
 })
 
-const Todo = mongoose.model('Todo', todoSchema)
-
-module.exports = Todo
+module.exports = mongoose.model('Todo', schema)
