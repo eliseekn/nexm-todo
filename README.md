@@ -8,5 +8,5 @@ On your console:
 yarn
 yarn start:server
 yarn start:client
-mongod --port=3002 --dbpath=db
+mongod --port=3002 --dbpath=server/db
 ```
